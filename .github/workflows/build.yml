@@ -11,9 +11,11 @@ jobs:
         with: {gradle-version: 8.9}
       - name: Birim testleri (core)
         run: |
+          ZIP=$(ls oyun-ceviri*.zip 2>/dev/null | sort -V | tail -1)
           DIR=.
-          if [ -f oyun-ceviri.zip ]; then
-            unzip -q oyun-ceviri.zip -d proj-test
+          if [ -n "$ZIP" ]; then
+            echo "Zip bulundu: $ZIP"
+            unzip -q "$ZIP" -d proj-test
             DIR=proj-test
           fi
           gradle :core:test -p "$DIR"
@@ -27,9 +29,11 @@ jobs:
         with: {gradle-version: 8.9}
       - name: Build debug APKs
         run: |
+          ZIP=$(ls oyun-ceviri*.zip 2>/dev/null | sort -V | tail -1)
           DIR=.
-          if [ -f oyun-ceviri.zip ]; then
-            unzip -q oyun-ceviri.zip -d proj
+          if [ -n "$ZIP" ]; then
+            echo "Zip bulundu: $ZIP"
+            unzip -q "$ZIP" -d proj
             DIR=proj
           fi
           gradle assembleDebug -p "$DIR"
